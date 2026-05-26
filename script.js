@@ -102,12 +102,12 @@ function animate() {
     parseFloat(slider.value);
 
     // roue principale
-    roue1.rotation.y =
+    roue1.rotation.x =
       turns * Math.PI * 2;
 
     // ratio engrenages
-    roue2.rotation.y =
-      -roue1.rotation.y * 3;
+    roue2.rotation.x =
+      -roue1.rotation.x * 3;
 
     // compteurs
     counter1.innerText =
