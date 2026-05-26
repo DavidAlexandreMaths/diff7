@@ -29,7 +29,7 @@ scene.add(ambient);
 
 // MODEL
 const loader = new GLTFLoader();
-let roue1, roue2;
+let roue1, roue2, roue3, roue4, diff;
 
 loader.load('animation_diff7.glb', (gltf) => {
   scene.add(gltf.scene);
@@ -44,6 +44,9 @@ loader.load('animation_diff7.glb', (gltf) => {
 
   roue1 = gltf.scene.getObjectByName("roue1");
   roue2 = gltf.scene.getObjectByName("roue2");
+  roue3 = gltf.scene.getObjectByName("roue3");
+  roue4 = gltf.scene.getObjectByName("roue4");
+  diff = gltf.scene.getObjectByName("diff");
 });
 
 // UI
@@ -80,9 +83,12 @@ function animate() {
 
     roue1.rotateOnWorldAxis(axeRoue, delta * Math.PI * 2);
     roue2.rotateOnWorldAxis(axeRoue, -delta * Math.PI * 2 * 3);
+    roue3.rotateOnWorldAxis(axeRoue, delta * Math.PI * 2 * 3);
+    roue4.rotateOnWorldAxis(axeRoue, -delta * Math.PI * 2 * 3);
+    diff.rotateOnWorldAxis(axeRoue, -delta * Math.PI * 2 * 7);
 
     counter1.innerText = "Première roue : " + currentTurns.toFixed(2);
-    counter2.innerText = "Dernière roue : " + (-currentTurns * 3).toFixed(2);
+    counter2.innerText = "Dernière roue : " + (-currentTurns * 7).toFixed(2);
   }
 
   renderer.render(scene, camera);
