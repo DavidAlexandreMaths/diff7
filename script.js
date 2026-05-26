@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 const scene = new THREE.Scene();
 
@@ -21,6 +22,10 @@ const renderer = new THREE.WebGLRenderer({
 renderer.setSize(window.innerWidth, window.innerHeight);
 
 document.body.appendChild(renderer.domElement);
+
+const controls = new OrbitControls(camera, renderer.domElement); 
+controls.enableDamping = true;
+controls.dampingFactor = 0.05;
 
 
 // -----------------------------------
@@ -59,6 +64,7 @@ loader.load('animation_diff7.glb', (gltf) => {
   const maxDim = Math.max(size.x, size.y, size.z);
   camera.position.set(center.x, center.y, center.z + maxDim * 2);
   camera.lookAt(center);
+  controls.target.copy(center);
 
   roue1 = gltf.scene.getObjectByName("roue1");
   roue2 = gltf.scene.getObjectByName("roue2");
@@ -88,6 +94,7 @@ document.getElementById("counter2");
 function animate() {
 
   requestAnimationFrame(animate);
+  controls.update();
 
   if (roue1 && roue2) {
 
