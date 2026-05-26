@@ -50,6 +50,9 @@ loader.load('animation_diff7.glb', (gltf) => {
   roue2 = gltf.scene.getObjectByName("roue2");
 });
 
+// Axe X = rouge, Y = vert, Z = bleu — taille 5 pour bien voir
+scene.add(new THREE.AxesHelper(5));
+
 // UI
 const turnInput = document.getElementById("turnInput");
 const startBtn = document.getElementById("startBtn");
