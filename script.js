@@ -69,7 +69,7 @@ startBtn.addEventListener("click", () => {
 });
 
 // ANIMATION
-const axeRoue = new THREE.Vector3(1, 0, 0);
+const axeRoue = new THREE.Vector3(0, 0, 1);
 let lastTurns = 0;
 
 function animate() {
