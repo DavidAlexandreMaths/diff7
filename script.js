@@ -34,12 +34,6 @@ let roue1, roue2;
 loader.load('animation_diff7.glb', (gltf) => {
   scene.add(gltf.scene);
 
-  // Diagnostic : liste tous les objets
-  gltf.scene.traverse(child => {
-    console.log(child.name, "→", child.type);
-  });
-
-  // Caméra auto
   const box = new THREE.Box3().setFromObject(gltf.scene);
   const size = box.getSize(new THREE.Vector3());
   const center = box.getCenter(new THREE.Vector3());
@@ -50,23 +44,42 @@ loader.load('animation_diff7.glb', (gltf) => {
 
   roue1 = gltf.scene.getObjectByName("roue1");
   roue2 = gltf.scene.getObjectByName("roue2");
-
-  // AxesHelper — à l'intérieur du callback, après avoir récupéré les roues
-  if (roue1) roue1.add(new THREE.AxesHelper(2));
-  if (roue2) roue2.add(new THREE.AxesHelper(2));
-
-  console.log("roue1 :", roue1);
-  console.log("roue2 :", roue2);
-}); // 👈 une seule fermeture ici
+});
 
 // UI
+const turnInput = document.getElementById("turnInput");
+const startBtn = document.getElementById("startBtn");
 const counter1 = document.getElementById("counter1");
 const counter2 = document.getElementById("counter2");
+
+// État animation
+let currentTurns = 0;
+let targetTurns = 0;
+const speed = 0.02;
+
+startBtn.addEventListener("click", () => {
+  targetTurns = currentTurns + parseFloat(turnInput.value);
+});
 
 // ANIMATION
 function animate() {
   requestAnimationFrame(animate);
   controls.update();
+
+  if (roue1 && roue2) {
+    if (Math.abs(targetTurns - currentTurns) > 0.001) {
+      currentTurns += (targetTurns - currentTurns) * speed;
+    } else {
+      currentTurns = targetTurns;
+    }
+
+    roue1.rotation.x = currentTurns * Math.PI * 2;       // 👈 axe rouge = X
+    roue2.rotation.x = -roue1.rotation.x * 3;
+
+    counter1.innerText = "Première roue : " + currentTurns.toFixed(2);
+    counter2.innerText = "Dernière roue : " + (-currentTurns * 3).toFixed(2);
+  }
+
   renderer.render(scene, camera);
 }
 animate();
