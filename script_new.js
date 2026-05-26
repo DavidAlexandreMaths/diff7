@@ -29,7 +29,7 @@ scene.add(ambient);
 
 // MODEL
 const loader = new GLTFLoader();
-let roue1, roue2, roue3, roue4, diff;
+let roue1, roue2, roue3, roue4, roueS, diff;
 
 loader.load('animation_diff7_new.glb', (gltf) => {
   scene.add(gltf.scene);
@@ -48,6 +48,15 @@ loader.load('animation_diff7_new.glb', (gltf) => {
   roue4 = gltf.scene.getObjectByName("roue4");
   roueS = gltf.scene.getObjectByName("roueS");
   diff = gltf.scene.getObjectByName("diff");
+  const roueSObj = gltf.scene.getObjectByName("roueS");
+const posRoueS = new THREE.Vector3();
+roueSObj.getWorldPosition(posRoueS);
+console.log("Position mondiale de roueS :", posRoueS);
+
+const posPivot = new THREE.Vector3(); // le centre autour duquel elle orbite
+// ex: centre de roue1
+roue1.getWorldPosition(posPivot);
+console.log("Position de roue1 :", posPivot);
 });
 
 // UI
@@ -86,7 +95,7 @@ function animate() {
     roue2.rotateOnWorldAxis(axeRoue, -delta * Math.PI * 2 * 3);
     roue3.rotateOnWorldAxis(axeRoue, delta * Math.PI * 2 * 3);
     roue4.rotateOnWorldAxis(axeRoue, -delta * Math.PI * 2 * 7);
-    roueS.rotateOnWorldAxis(axeRoue, -delta * Math.PI * 2 * 3);
+    
     diff.rotateOnWorldAxis(axeRoue, -delta * Math.PI * 2 * 3);
 
     counter1.innerText = "Première roue : " + currentTurns.toFixed(2);
