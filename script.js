@@ -73,6 +73,11 @@ loader.load('animation_diff7.glb', (gltf) => {
 
 });
 
+const axesHelper1 = new THREE.AxesHelper(2); // rouge=X, vert=Y, bleu=Z
+roue1.add(axesHelper1);
+const axesHelper2 = new THREE.AxesHelper(2);
+roue2.add(axesHelper2);
+
 
 // -----------------------------------
 // UI
