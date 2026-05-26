@@ -84,8 +84,8 @@ function animate() {
     roue1.rotateOnWorldAxis(axeRoue, delta * Math.PI * 2);
     roue2.rotateOnWorldAxis(axeRoue, -delta * Math.PI * 2 * 3);
     roue3.rotateOnWorldAxis(axeRoue, delta * Math.PI * 2 * 3);
-    roue4.rotateOnWorldAxis(axeRoue, -delta * Math.PI * 2 * 3);
-    diff.rotateOnWorldAxis(axeRoue, -delta * Math.PI * 2 * 7);
+    roue4.rotateOnWorldAxis(axeRoue, -delta * Math.PI * 2 * 7);
+    diff.rotateOnWorldAxis(axeRoue, -delta * Math.PI * 2 * 3);
 
     counter1.innerText = "Première roue : " + currentTurns.toFixed(2);
     counter2.innerText = "Dernière roue : " + (-currentTurns * 7).toFixed(2);
