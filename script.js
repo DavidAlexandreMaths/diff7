@@ -78,7 +78,7 @@ function animate() {
     }
 
    // À mettre dans animate() à la place des rotation.x
-const axeX = new THREE.Vector3(0, 1, 0); // axe X mondial
+const axeX = new THREE.Vector3(0, 0, 1); // axe X mondial
 roue1.rotateOnWorldAxis(axeX, (targetTurns - currentTurns) * Math.PI * 2 * speed);
 roue2.rotateOnWorldAxis(axeX, -(targetTurns - currentTurns) * Math.PI * 2 * speed * 3);
 
