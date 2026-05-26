@@ -66,6 +66,9 @@ startBtn.addEventListener("click", () => {
 });
 
 // ANIMATION
+const axeRoue = new THREE.Vector3(0, 1, 0);
+let lastTurns = 0;
+
 function animate() {
   requestAnimationFrame(animate);
   controls.update();
@@ -77,10 +80,12 @@ function animate() {
       currentTurns = targetTurns;
     }
 
-   // À mettre dans animate() à la place des rotation.x
-const axeX = new THREE.Vector3(0, 0, 1); // axe X mondial
-roue1.rotateOnWorldAxis(axeX, (targetTurns - currentTurns) * Math.PI * 2 * speed);
-roue2.rotateOnWorldAxis(axeX, -(targetTurns - currentTurns) * Math.PI * 2 * speed * 3);
+    // On calcule le delta depuis la dernière frame
+    const delta = currentTurns - lastTurns;
+    lastTurns = currentTurns;
+
+    roue1.rotateOnWorldAxis(axeRoue, delta * Math.PI * 2);
+    roue2.rotateOnWorldAxis(axeRoue, -delta * Math.PI * 2 * 3);
 
     counter1.innerText = "Première roue : " + currentTurns.toFixed(2);
     counter2.innerText = "Dernière roue : " + (-currentTurns * 3).toFixed(2);
