@@ -72,18 +72,17 @@ startBtn.addEventListener("click", () => {
 const axeRoue = new THREE.Vector3(0, 0, 1);
 let lastTurns = 0;
 
+const speed = 0.03; // tours par frame — ajuste selon la vitesse voulue
+
 function animate() {
   requestAnimationFrame(animate);
   controls.update();
 
   if (roue1 && roue2) {
-    if (Math.abs(targetTurns - currentTurns) > 0.001) {
-      currentTurns += (targetTurns - currentTurns) * speed;
-    } else {
-      currentTurns = targetTurns;
+    if (currentTurns < targetTurns) {
+      currentTurns = Math.min(currentTurns + speed, targetTurns); // avance à vitesse constante
     }
 
-    // On calcule le delta depuis la dernière frame
     const delta = currentTurns - lastTurns;
     lastTurns = currentTurns;
 
@@ -103,4 +102,9 @@ window.addEventListener('resize', () => {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
   renderer.setSize(window.innerWidth, window.innerHeight);
+  startBtn.addEventListener("click", () => {
+  currentTurns = 0;        // 👈 reset
+  lastTurns = 0;           // 👈 reset
+  targetTurns = parseFloat(turnInput.value); // plus besoin d'ajouter à currentTurns
+});
 });
