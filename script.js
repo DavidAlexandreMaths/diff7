@@ -51,6 +51,15 @@ loader.load('animation_diff7.glb', (gltf) => {
 
   scene.add(gltf.scene);
 
+  const box = new THREE.Box3().setFromObject(gltf.scene);
+  const size = box.getSize(new THREE.Vector3());
+  const center = box.getCenter(new THREE.Vector3());
+
+  // Centre la caméra sur le modèle
+  const maxDim = Math.max(size.x, size.y, size.z);
+  camera.position.set(center.x, center.y, center.z + maxDim * 2);
+  camera.lookAt(center);
+
   roue1 = gltf.scene.getObjectByName("roue1");
   roue2 = gltf.scene.getObjectByName("roue2");
 
