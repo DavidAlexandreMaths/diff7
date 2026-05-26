@@ -34,10 +34,6 @@ let roue1, roue2;
 loader.load('animation_diff7.glb', (gltf) => {
   scene.add(gltf.scene);
 
-   gltf.scene.traverse(child => {
-    console.log(child.name, "→", child.type);
-   });
-
   const box = new THREE.Box3().setFromObject(gltf.scene);
   const size = box.getSize(new THREE.Vector3());
   const center = box.getCenter(new THREE.Vector3());
@@ -50,9 +46,6 @@ loader.load('animation_diff7.glb', (gltf) => {
   roue2 = gltf.scene.getObjectByName("roue2");
 });
 
-// Axe X = rouge, Y = vert, Z = bleu — taille 5 pour bien voir
-scene.add(new THREE.AxesHelper(5));
-
 // UI
 const turnInput = document.getElementById("turnInput");
 const startBtn = document.getElementById("startBtn");
@@ -62,25 +55,24 @@ const counter2 = document.getElementById("counter2");
 // État animation
 let currentTurns = 0;
 let targetTurns = 0;
-const speed = 0.02;
+let lastTurns = 0;
+const speed = 0.03;
+const axeRoue = new THREE.Vector3(0, 0, 1);
 
 startBtn.addEventListener("click", () => {
-  targetTurns = currentTurns + parseFloat(turnInput.value);
+  currentTurns = 0;
+  lastTurns = 0;
+  targetTurns = parseFloat(turnInput.value);
 });
 
 // ANIMATION
-const axeRoue = new THREE.Vector3(0, 0, 1);
-let lastTurns = 0;
-
-const speed = 0.03; // tours par frame — ajuste selon la vitesse voulue
-
 function animate() {
   requestAnimationFrame(animate);
   controls.update();
 
   if (roue1 && roue2) {
     if (currentTurns < targetTurns) {
-      currentTurns = Math.min(currentTurns + speed, targetTurns); // avance à vitesse constante
+      currentTurns = Math.min(currentTurns + speed, targetTurns);
     }
 
     const delta = currentTurns - lastTurns;
@@ -102,9 +94,4 @@ window.addEventListener('resize', () => {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
   renderer.setSize(window.innerWidth, window.innerHeight);
-  startBtn.addEventListener("click", () => {
-  currentTurns = 0;        // 👈 reset
-  lastTurns = 0;           // 👈 reset
-  targetTurns = parseFloat(turnInput.value); // plus besoin d'ajouter à currentTurns
-});
 });
