@@ -84,7 +84,7 @@ let targetTurns  = 0;
 let lastTurns    = 0;
 const speed    = 0.003;
 const axeRoue  = new THREE.Vector3(0, 0, 1);
-const axeS     = new THREE.Vector3(1, 0, 0);
+const axeS     = new THREE.Vector3(0, 1, 0);
 
 startBtn.addEventListener("click", () => {
   currentTurns = 0;
