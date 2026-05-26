@@ -48,15 +48,33 @@ loader.load('animation_diff7_new.glb', (gltf) => {
   roue4 = gltf.scene.getObjectByName("roue4");
   roueS = gltf.scene.getObjectByName("roueS");
   diff = gltf.scene.getObjectByName("diff");
-  const roueSObj = gltf.scene.getObjectByName("roueS");
-const posRoueS = new THREE.Vector3();
-roueSObj.getWorldPosition(posRoueS);
-console.log("Position mondiale de roueS :", posRoueS);
+  
+// Centre d'orbite = position mondiale de roue1
+  const posCentre = new THREE.Vector3(
+    0.029368644580245018,
+    0.02801460772752762,
+    -0.020274734124541283
+  );
 
-const posPivot = new THREE.Vector3(); // le centre autour duquel elle orbite
-// ex: centre de roue1
-roue1.getWorldPosition(posPivot);
-console.log("Position de roue1 :", posPivot);
+  // Position mondiale de roueS
+  const posRoueS = new THREE.Vector3(
+    0.029432089999318123,
+    0.027950063347816467,
+    0.01196998730301857
+  );
+
+// Crée le pivot au centre d'orbite (roue1)
+  pivotRoueS = new THREE.Group();
+  pivotRoueS.position.copy(posCentre);
+  scene.add(pivotRoueS);
+
+  // Calcule la position locale de roueS par rapport au pivot
+  const positionLocale = posRoueS.clone().sub(posCentre);
+
+  // Retire roueS de son parent GLB et la met dans le pivot
+  roueS.parent.remove(roueS);
+  roueS.position.copy(positionLocale);
+  pivotRoueS.add(roueS);
 });
 
 // UI
@@ -71,6 +89,7 @@ let targetTurns = 0;
 let lastTurns = 0;
 const speed = 0.003;
 const axeRoue = new THREE.Vector3(0, 0, 1);
+const axeS = new THREE.Vector3(1, 0, 0);
 
 startBtn.addEventListener("click", () => {
   currentTurns = 0;
@@ -95,8 +114,9 @@ function animate() {
     roue2.rotateOnWorldAxis(axeRoue, -delta * Math.PI * 2 * 3);
     roue3.rotateOnWorldAxis(axeRoue, delta * Math.PI * 2 * 3);
     roue4.rotateOnWorldAxis(axeRoue, -delta * Math.PI * 2 * 7);
-    
     diff.rotateOnWorldAxis(axeRoue, -delta * Math.PI * 2 * 3);
+    pivotRoueS.rotateOnWorldAxis(axeRoue, -delta * Math.PI * 2 * 3);
+    roueS.rotateOnWorldAxis(axeS, -delta * Math.PI * 2 * 4);
 
     counter1.innerText = "Première roue : " + currentTurns.toFixed(2);
     counter2.innerText = "Dernière roue : " + (-currentTurns * 7).toFixed(2);
