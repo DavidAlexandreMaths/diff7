@@ -56,7 +56,7 @@ const counter2 = document.getElementById("counter2");
 let currentTurns = 0;
 let targetTurns = 0;
 let lastTurns = 0;
-const speed = 0.03;
+const speed = 0.01;
 const axeRoue = new THREE.Vector3(0, 0, 1);
 
 startBtn.addEventListener("click", () => {
