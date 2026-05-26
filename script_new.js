@@ -111,7 +111,7 @@ function animate() {
     roue4.rotateOnWorldAxis(axeRoue, -delta * Math.PI * 2 * 7);
     diff.rotateOnWorldAxis(axeRoue,  -delta * Math.PI * 2 * 3);
     pivotRoueS.rotateOnWorldAxis(axeRoue, -delta * Math.PI * 2 * 3);
-    
+    roueS.rotateOnWorldAxis(axeS, -delta * Math.PI * 2 * 4);
 
     counter1.innerText = "Première roue : " + currentTurns.toFixed(2);
     counter2.innerText = "Dernière roue : " + (-currentTurns * 7).toFixed(2);
