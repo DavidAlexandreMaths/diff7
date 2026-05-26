@@ -30,6 +30,7 @@ scene.add(ambient);
 // MODEL
 const loader = new GLTFLoader();
 let roue1, roue2, roue3, roue4, roueS, diff;
+let pivotRoueS; // 👈 déclaré ici
 
 loader.load('animation_diff7_new.glb', (gltf) => {
   scene.add(gltf.scene);
@@ -47,31 +48,25 @@ loader.load('animation_diff7_new.glb', (gltf) => {
   roue3 = gltf.scene.getObjectByName("roue3");
   roue4 = gltf.scene.getObjectByName("roue4");
   roueS = gltf.scene.getObjectByName("roueS");
-  diff = gltf.scene.getObjectByName("diff");
-  
-// Centre d'orbite = position mondiale de roue1
+  diff  = gltf.scene.getObjectByName("diff");
+
   const posCentre = new THREE.Vector3(
     0.029368644580245018,
     0.02801460772752762,
     -0.020274734124541283
   );
 
-  // Position mondiale de roueS
   const posRoueS = new THREE.Vector3(
     0.029432089999318123,
     0.027950063347816467,
     0.01196998730301857
   );
 
-// Crée le pivot au centre d'orbite (roue1)
-  pivotRoueS = new THREE.Group();
+  pivotRoueS = new THREE.Group(); // 👈 assigné ici, mais déclaré en dehors
   pivotRoueS.position.copy(posCentre);
   scene.add(pivotRoueS);
 
-  // Calcule la position locale de roueS par rapport au pivot
   const positionLocale = posRoueS.clone().sub(posCentre);
-
-  // Retire roueS de son parent GLB et la met dans le pivot
   roueS.parent.remove(roueS);
   roueS.position.copy(positionLocale);
   pivotRoueS.add(roueS);
@@ -79,22 +74,22 @@ loader.load('animation_diff7_new.glb', (gltf) => {
 
 // UI
 const turnInput = document.getElementById("turnInput");
-const startBtn = document.getElementById("startBtn");
-const counter1 = document.getElementById("counter1");
-const counter2 = document.getElementById("counter2");
+const startBtn  = document.getElementById("startBtn");
+const counter1  = document.getElementById("counter1");
+const counter2  = document.getElementById("counter2");
 
 // État animation
 let currentTurns = 0;
-let targetTurns = 0;
-let lastTurns = 0;
-const speed = 0.003;
-const axeRoue = new THREE.Vector3(0, 0, 1);
-const axeS = new THREE.Vector3(1, 0, 0);
+let targetTurns  = 0;
+let lastTurns    = 0;
+const speed    = 0.003;
+const axeRoue  = new THREE.Vector3(0, 0, 1);
+const axeS     = new THREE.Vector3(1, 0, 0);
 
 startBtn.addEventListener("click", () => {
   currentTurns = 0;
-  lastTurns = 0;
-  targetTurns = parseFloat(turnInput.value);
+  lastTurns    = 0;
+  targetTurns  = parseFloat(turnInput.value);
 });
 
 // ANIMATION
@@ -102,7 +97,7 @@ function animate() {
   requestAnimationFrame(animate);
   controls.update();
 
-  if (roue1 && roue2) {
+  if (roue1 && roue2 && pivotRoueS) { // 👈 on vérifie aussi pivotRoueS
     if (currentTurns < targetTurns) {
       currentTurns = Math.min(currentTurns + speed, targetTurns);
     }
@@ -110,13 +105,13 @@ function animate() {
     const delta = currentTurns - lastTurns;
     lastTurns = currentTurns;
 
-    roue1.rotateOnWorldAxis(axeRoue, delta * Math.PI * 2);
+    roue1.rotateOnWorldAxis(axeRoue,  delta * Math.PI * 2);
     roue2.rotateOnWorldAxis(axeRoue, -delta * Math.PI * 2 * 3);
-    roue3.rotateOnWorldAxis(axeRoue, delta * Math.PI * 2 * 3);
+    roue3.rotateOnWorldAxis(axeRoue,  delta * Math.PI * 2 * 3);
     roue4.rotateOnWorldAxis(axeRoue, -delta * Math.PI * 2 * 7);
-    diff.rotateOnWorldAxis(axeRoue, -delta * Math.PI * 2 * 3);
+    diff.rotateOnWorldAxis(axeRoue,  -delta * Math.PI * 2 * 3);
     pivotRoueS.rotateOnWorldAxis(axeRoue, -delta * Math.PI * 2 * 3);
-    roueS.rotateOnWorldAxis(axeS, -delta * Math.PI * 2 * 4);
+    roueS.rotateOnWorldAxis(axeS,    -delta * Math.PI * 2 * 4);
 
     counter1.innerText = "Première roue : " + currentTurns.toFixed(2);
     counter2.innerText = "Dernière roue : " + (-currentTurns * 7).toFixed(2);
