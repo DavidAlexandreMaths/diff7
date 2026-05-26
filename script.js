@@ -53,8 +53,12 @@ let roue1;
 let roue2;
 
 loader.load('animation_diff7.glb', (gltf) => {
-
   scene.add(gltf.scene);
+
+  gltf.scene.traverse(child => {
+    console.log(child.name, "→", child.type);
+  });
+});
 
   const box = new THREE.Box3().setFromObject(gltf.scene);
   const size = box.getSize(new THREE.Vector3());
