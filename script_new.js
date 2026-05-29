@@ -8,7 +8,7 @@ scene.background = new THREE.Color(0x202020);
 const camera = new THREE.PerspectiveCamera(
   60,
   window.innerWidth / window.innerHeight,
-  0.1,
+  0.001,
   1000
 );
 
@@ -19,6 +19,7 @@ document.body.appendChild(renderer.domElement);
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
 controls.dampingFactor = 0.05;
+controls.minDistance = 0.001;
 
 // LIGHTS
 const light = new THREE.DirectionalLight(0xffffff, 3);
